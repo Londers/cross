@@ -1,5 +1,4 @@
 import React from "react";
-import ImagePlaceholder from "../common/ImagePlaceholder";
 import {useAppSelector} from "../app/hooks";
 import {selectDescription} from "./crossSlice";
 import ButtonsColumn from "./Columns/ButtonsColumn";

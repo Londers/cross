@@ -31,5 +31,6 @@ export const {setInitialData} = crossSlice.actions
 
 export const selectCrossInfo = (state: RootState) => state.crossInfo
 export const selectDescription = (state: RootState) => state.crossInfo.cross?.description
+export const selectPhases = (state: RootState) => state.crossInfo.phases
 
 export default crossSlice.reducer
