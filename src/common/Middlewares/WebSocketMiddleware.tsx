@@ -1,10 +1,19 @@
 import {createAction, createListenerMiddleware, isAnyOf} from "@reduxjs/toolkit";
 import {
-    CrossBuildMsg,
+    ChangeEditMsg,
+    CrossBuildMsg, CrossConnectionMsg, CrossUpdateMsg, DispatchMsg,
     IncomingWebSocketMessage,
-    OutcomingWebSocketMessage
+    OutcomingWebSocketMessage, PhaseMsg, StateChangeMsg
 } from "../index";
-import {setInitialData} from "../../features/crossSlice";
+import {
+    setConnection,
+    setCross,
+    setDispatch,
+    setEdit,
+    setInitialData,
+    setPhase,
+    setState
+} from "../../features/crossSlice";
 
 export const wsConnect = createAction<string>("websocket/connect")
 export const wsGetMessage = createAction<IncomingWebSocketMessage>('websocket/message')
@@ -28,17 +37,30 @@ WebSocketListenerMiddleware.startListening({
                 case "crossBuild":
                     listenerApi.dispatch(setInitialData(action.payload.data as CrossBuildMsg))
                     break;
-                // case "crosses":
-                //     listenerApi.dispatch(setCrosses(action.payload.data as CrossesMsg))
-                //     break;
-                // case "devices":
-                //     listenerApi.dispatch(setDevices(action.payload.data as DevicesMsg))
-                //     break;
-                // case "gprs":
-                //     listenerApi.dispatch(setNewGPRS(action.payload.data as GprsMsg))
-                //     break;
-                case "error":
+                case "changeEdit":
+                    listenerApi.dispatch(setEdit(action.payload.data as ChangeEditMsg))
                     break;
+                case "dispatch":
+                    listenerApi.dispatch(setDispatch(action.payload.data as DispatchMsg))
+                    break;
+                case "crossUpdate":
+                    listenerApi.dispatch(setCross(action.payload.data as CrossUpdateMsg))
+                    break;
+                case "stateChange":
+                    listenerApi.dispatch(setState(action.payload.data as StateChangeMsg))
+                    break;
+                case "crossConnection":
+                    listenerApi.dispatch(setConnection(action.payload.data as CrossConnectionMsg))
+                    break;
+                case "phase":
+                    listenerApi.dispatch(setPhase(action.payload.data as PhaseMsg))
+                    break;
+                // case "error":
+                //     listenerApi.dispatch(setError(action.payload.data as ChangeEditMsg))
+                //     break;
+                // case "close":
+                //     listenerApi.dispatch(setClose(action.payload.data as ChangeEditMsg))
+                //     break;
                 default:
                     console.log("type not found:", action.payload)
                     break;

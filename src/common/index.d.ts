@@ -3,7 +3,14 @@ export interface IncomingWebSocketMessage {
     data: IncomingDataType
 }
 
-export type IncomingDataType = CrossBuildMsg
+export type IncomingDataType =
+    CrossBuildMsg
+    | ChangeEditMsg
+    | DispatchMsg
+    | CrossUpdateMsg
+    | StateChangeMsg
+    | CrossConnectionMsg
+    | PhaseMsg
 
 export type OutcomingWebSocketMessage = OutcomingDataType
 
@@ -23,9 +30,52 @@ export interface CrossBuildMsg {
     techMode: string;
 }
 
-export interface RootObject {
-    type: string;
-    data: CrossBuildMsg;
+export interface ChangeEditMsg {
+    edit: boolean
+}
+
+export interface DispatchMsg {
+    status: boolean
+    command: DispatchCommand
+}
+
+export interface CrossUpdateMsg {
+    idevice: number
+    sfdk: boolean
+    state: State
+    status: Tlsost
+}
+
+export interface StateChangeMsg {
+    state: State
+    user: string
+}
+
+export interface CrossConnectionMsg {
+    scon: boolean
+    eth: boolean
+}
+
+export interface PhaseMsg {
+    dk: Dk
+    idevice: number
+    modeRdk: string
+    techMode: string
+}
+
+export interface ErrorMsg {
+
+}
+
+export interface CloseMsg {
+
+}
+
+export interface DispatchCommand {
+    cmd: number
+    id: number
+    param: number
+    user: string
 }
 
 export interface Access {

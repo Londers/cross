@@ -1,11 +1,13 @@
 import {configureStore} from "@reduxjs/toolkit";
 import {crossSlice} from "../features/crossSlice";
 import {WebSocketListenerMiddleware} from "../common/Middlewares/WebSocketMiddleware";
+import {dispatchTableSlice} from "../features/dispatchTableSlice";
 
 
 export const store = configureStore({
     reducer: {
-        crossInfo: crossSlice.reducer
+        crossInfo: crossSlice.reducer,
+        dispatchTable: dispatchTableSlice.reducer
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(WebSocketListenerMiddleware.middleware),
 })
