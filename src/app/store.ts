@@ -7,7 +7,7 @@ import {dispatchTableSlice} from "../features/dispatchTableSlice";
 export const store = configureStore({
     reducer: {
         crossInfo: crossSlice.reducer,
-        dispatchTable: dispatchTableSlice.reducer
+        dispatchTable: dispatchTableSlice.reducer,
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(WebSocketListenerMiddleware.middleware),
 })

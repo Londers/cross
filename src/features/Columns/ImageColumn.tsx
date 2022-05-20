@@ -2,7 +2,7 @@ import React from "react";
 import ImagePlaceholder from "../../common/ImagePlaceholder";
 import {useAppSelector} from "../../app/hooks";
 import {selectCrossInfo} from "../crossSlice";
-import DispatchTable from "../../common/DispatchTable";
+import DispatchTable from "../Dispatch/DispatchTable";
 import {Button} from "@mui/material";
 
 function ImageColumn() {

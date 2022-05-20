@@ -33,14 +33,12 @@ function ControlColumn() {
                 if (weekSet !== 0) {
                     cross.state?.arrays.WeekSets.wsets[(weekSet as number) - 1]?.days.forEach(
                         week => {
-                            console.log(week)
                             usedDaySets.add(week)
                         }
                     )
                 }
             }
         )
-        console.log(usedDaySets)
         return Array.from(usedDaySets)
     }
     const daySets: number[] = findUsedDaySets()

@@ -3,7 +3,6 @@ import {
     CrossBuildMsg,
     CrossConnectionMsg,
     CrossUpdateMsg,
-    DispatchMsg,
     PhaseMsg,
     StateChangeMsg
 } from "../common";
@@ -35,9 +34,6 @@ export const crossSlice = createSlice({
         setEdit: (state, action: PayloadAction<ChangeEditMsg>) => {
             state.edit = action.payload.edit
         },
-        setDispatch: (state, action: PayloadAction<DispatchMsg>) => {
-            //user
-        },
         setCross: (state, action: PayloadAction<CrossUpdateMsg>) => {
             state.sfdk = action.payload.sfdk
             state.state = action.payload.state
@@ -47,7 +43,6 @@ export const crossSlice = createSlice({
         },
         setState: (state, action: PayloadAction<StateChangeMsg>) => {
             Object.assign(state, action.payload)
-            //user
         },
         setConnection: (state, action: PayloadAction<CrossConnectionMsg>) => {
             state.scon = action.payload.scon
@@ -65,10 +60,11 @@ export const crossSlice = createSlice({
     }
 })
 
-export const {setInitialData, setEdit, setDispatch, setCross, setState, setConnection, setPhase} = crossSlice.actions
+export const {setInitialData, setEdit, setCross, setState, setConnection, setPhase} = crossSlice.actions
 
 export const selectCrossInfo = (state: RootState) => state.crossInfo
 export const selectDescription = (state: RootState) => state.crossInfo.cross?.description
 export const selectPhases = (state: RootState) => state.crossInfo.phases
+export const selectIdevice = (state: RootState) => state.crossInfo.cross?.idevice
 
 export default crossSlice.reducer

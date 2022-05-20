@@ -8,12 +8,12 @@ import {
 import {
     setConnection,
     setCross,
-    setDispatch,
     setEdit,
     setInitialData,
     setPhase,
     setState
 } from "../../features/crossSlice";
+import {setDispatch} from "../../features/dispatchTableSlice";
 
 export const wsConnect = createAction<string>("websocket/connect")
 export const wsGetMessage = createAction<IncomingWebSocketMessage>('websocket/message')

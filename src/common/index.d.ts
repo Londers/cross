@@ -1,3 +1,5 @@
+import {darkScrollbar} from "@mui/material";
+
 export interface IncomingWebSocketMessage {
     type: string
     data: IncomingDataType
@@ -37,6 +39,7 @@ export interface ChangeEditMsg {
 export interface DispatchMsg {
     status: boolean
     command: DispatchCommand
+    time: string
 }
 
 export interface CrossUpdateMsg {
@@ -326,3 +329,9 @@ export interface State {
     arrays: Arrays;
 }
 
+export interface DispatchTableRow {
+    id: number
+    time: string
+    status: string
+    user: string
+}

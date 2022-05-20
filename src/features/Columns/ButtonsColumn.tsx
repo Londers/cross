@@ -1,13 +1,17 @@
 import React from "react";
-import {useAppSelector} from "../../app/hooks";
-import {selectPhases} from "../crossSlice";
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
+import {selectIdevice, selectPhases} from "../crossSlice";
 import {Button} from "@mui/material";
+import {PhaseCommandType} from "../../common/tools";
+import {wsSendMessage} from "../../common/Middlewares/WebSocketMiddleware";
 
 function ButtonsColumn() {
     const phases = useAppSelector(selectPhases)
+    const idevice = useAppSelector(selectIdevice)
+    const dispatch = useAppDispatch()
 
-    const dispatchToDevice = (command: number) => {
-        console.log(command)
+    const dispatchToDevice = (param: number) => {
+        dispatch(wsSendMessage({type: "dispatch", cmd: PhaseCommandType, id: idevice, param}))
     }
 
     return (
