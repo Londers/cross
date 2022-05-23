@@ -335,3 +335,14 @@ export interface DispatchTableRow {
     status: string
     user: string
 }
+
+export interface PhaseTableRow {
+    id: number
+    numTU: number | string
+    shiftPR: number
+    timePR: number
+    numTS: number | string
+    timeMain: number
+    timeTS: number
+    timeTU: number
+}

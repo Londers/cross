@@ -14,6 +14,7 @@ import {
     setState
 } from "../../features/crossSlice";
 import {setDispatch} from "../../features/dispatchTableSlice";
+import {addDK} from "../../features/phaseTableSlice";
 
 export const wsConnect = createAction<string>("websocket/connect")
 export const wsGetMessage = createAction<IncomingWebSocketMessage>('websocket/message')
@@ -54,6 +55,7 @@ WebSocketListenerMiddleware.startListening({
                     break;
                 case "phase":
                     listenerApi.dispatch(setPhase(action.payload.data as PhaseMsg))
+                    listenerApi.dispatch(addDK(action.payload.data as PhaseMsg))
                     break;
                 // case "error":
                 //     listenerApi.dispatch(setError(action.payload.data as ChangeEditMsg))

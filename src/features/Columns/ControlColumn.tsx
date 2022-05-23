@@ -3,6 +3,7 @@ import {Grid, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {selectCrossInfo} from "../crossSlice";
 import {wsSendMessage} from "../../common/Middlewares/WebSocketMiddleware";
+import {decodePhase} from "../../common/phaseTableLib";
 
 function ControlColumn() {
     const cross = useAppSelector(selectCrossInfo)
@@ -106,7 +107,7 @@ function ControlColumn() {
                 </Select>
             </Grid>
             <Grid item sx={{marginTop: "2vh"}}>
-                Фаза: {cross.dk?.fdk}
+                Фаза: {decodePhase(cross.dk?.fdk ?? -1)}
             </Grid>
             <Grid item sx={{marginTop: "2vh"}}>
                 {getDeviceType()}

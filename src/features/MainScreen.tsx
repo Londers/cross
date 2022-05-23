@@ -14,7 +14,7 @@ function MainScreen() {
         <>
             <h3 style={{width: "100%"}}>{description}</h3>
             <Box flexGrow={1}
-                 style={{width: "calc(100vw - 4px)", height: "calc(100vh - 4em)", border: "2px black solid"}}>
+                 style={{width: "calc(100vw - 4px)", height: "calc(100vh - 4em)"}}>
                 <Grid
                     container
                     direction="row"
@@ -23,16 +23,16 @@ function MainScreen() {
                     style={{height: "100%"}}
                     columns={7.5}
                 >
-                    <Grid item xs={0.5} style={{border: "2px green solid"}}>
+                    <Grid item xs={0.5}>
                         <ButtonsColumn/>
                     </Grid>
-                    <Grid item xs="auto" style={{border: "2px green solid"}}>
+                    <Grid item xs="auto">
                         <ImageColumn/>
                     </Grid>
-                    <Grid item xs={1} style={{border: "2px green solid"}}>
+                    <Grid item xs={1}>
                         <ControlColumn/>
                     </Grid>
-                    <Grid item xs={4} style={{border: "2px green solid"}}>
+                    <Grid item xs={4}>
                         <PhaseTableColumn/>
                     </Grid>
                 </Grid>

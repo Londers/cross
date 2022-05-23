@@ -45,7 +45,7 @@ function DispatchTable() {
     }, [generateData]);
 
     return (
-        <div style={{height: "30vh", border: "2px solid red"}}>
+        <div style={{height: "30vh", marginTop: "1.5vh"}}>
             <ThemeProvider theme={theme}>
                 <DataGrid
                     // components={{
