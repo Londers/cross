@@ -3,7 +3,8 @@ import {DispatchCommand} from "./index";
 
 export const PhaseCommandType = 9
 
-export const getDescription = (command: DispatchCommand) => {
+export const getDescription = (status: boolean, command: DispatchCommand) => {
+    if (!status) return "Отсутствует связь с сервером"
     switch (command.cmd) {
         case 4:
             if (command.param === 1) {

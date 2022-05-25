@@ -28,11 +28,12 @@ function DispatchTable() {
     const generateData = useCallback(() => {
         const initialState: DispatchTableRow[] = []
         tableData.forEach((row, index) => {
+            // if (!row.time) row = { ...row, time: new Date().toString()}
             initialState.push({
                 id: index,
-                time: new Date(row.time).toTimeString().substring(0, 8),
-                status: getDescription(row.command),
-                user: row.command.user
+                time: new Date(row.time ?? new Date()).toTimeString().substring(0, 8),
+                status: getDescription(row.status, row.command),
+                user: row.command?.user ?? ""
             })
         })
         return initialState
