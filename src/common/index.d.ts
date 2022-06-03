@@ -30,6 +30,7 @@ export interface CrossBuildMsg {
     sfdk: boolean;
     state: State | undefined;
     techMode: string;
+    model: Model | undefined;
 }
 
 export interface ChangeEditMsg {
@@ -64,6 +65,7 @@ export interface PhaseMsg {
     idevice: number
     modeRdk: string
     techMode: string
+    model: Model
 }
 
 export interface ErrorMsg {
@@ -345,4 +347,15 @@ export interface PhaseTableRow {
     timeMain: number
     timeTS: number
     timeTU: number
+}
+
+export interface Model {
+    vpcpdl: number;
+    vpcpdr: number;
+    vpbsl: number;
+    vpbsr: number;
+    C12: boolean;
+    STP: boolean;
+    DKA: boolean;
+    DTA: boolean;
 }

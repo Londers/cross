@@ -1,12 +1,14 @@
 import React from "react";
 import {Grid, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {selectCrossInfo} from "../crossSlice";
+import {selectCrossInfo, selectModel} from "../crossSlice";
 import {wsSendMessage} from "../../common/Middlewares/WebSocketMiddleware";
 import {decodePhase} from "../../common/phaseTableLib";
+import {switchArrayTypeFromDevice} from "../../common/Tools";
 
 function ControlColumn() {
     const cross = useAppSelector(selectCrossInfo)
+    const model = useAppSelector(selectModel)
 
     const dispatch = useAppDispatch()
     const dispatchControl = (cmd: number, param: number) => {
@@ -43,19 +45,6 @@ function ControlColumn() {
         return Array.from(usedDaySets)
     }
     const daySets: number[] = findUsedDaySets()
-
-    const getDeviceType = () => {
-        switch (cross.dk?.ddk) {
-            case 1:
-                return "С12УСДК"
-            case 2:
-                return "УСДК"
-            case 4:
-                return "ДКА"
-            case 8:
-                return "ДТА"
-        }
-    }
 
     return (
         <Grid
@@ -110,7 +99,7 @@ function ControlColumn() {
                 Фаза: {decodePhase(cross.dk?.fdk ?? -1)}
             </Grid>
             <Grid item sx={{marginTop: "2vh"}}>
-                {getDeviceType()}
+                {switchArrayTypeFromDevice(model)}
             </Grid>
             <Grid item sx={{marginTop: "2vh"}}>
                 {cross.scon ? (cross.eth ? "LAN" : "GPRS") : ""}

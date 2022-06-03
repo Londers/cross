@@ -1,5 +1,5 @@
 //переход на автоматическое регулирование по 0
-import {DispatchCommand} from "./index";
+import {DispatchCommand, Model} from "./index";
 
 export const PhaseCommandType = 9
 
@@ -33,4 +33,13 @@ export const getDescription = (status: boolean, command: DispatchCommand) => {
             return 'Отправлена команда "Отключить светофоры"';
     }
     return `Отправлена команда "Включить фазу №${command.param}"`;
+}
+
+// Расшифровка типа устройства
+export const switchArrayTypeFromDevice = (model: Model | undefined) => {
+    if (!model) return ""
+    if (model.C12) return "С12УСДК"
+    if (model.DKA) return "ДКА"
+    if (model.DTA) return "ДТА"
+    return "УСДК"
 }

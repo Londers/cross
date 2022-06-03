@@ -4,7 +4,7 @@ import {createTheme, ThemeProvider} from "@mui/material";
 import {useAppSelector} from "../../app/hooks";
 import {selectDispatchTable} from "../dispatchTableSlice";
 import {DispatchTableRow} from "../../common";
-import {getDescription} from "../../common/tools";
+import {getDescription} from "../../common/Tools";
 import "./DispatchTable.sass"
 
 const theme = createTheme(

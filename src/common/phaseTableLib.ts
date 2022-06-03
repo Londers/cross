@@ -41,9 +41,9 @@ class Pointer {
         this._previous--
         this._current--
         this._next--
-        if (this._previous <= -1) this._previous = maxTableSize
-        if (this._current <= -1) this._current = maxTableSize
-        if (this._next <= -1) this._next = maxTableSize
+        if (this._previous <= -1) this._previous = maxTableSize - 1
+        if (this._current <= -1) this._current = maxTableSize - 1
+        if (this._next <= -1) this._next = maxTableSize - 1
     }
 
     get previous(): number {
@@ -73,11 +73,11 @@ export const convertDKtoTableRows = (dks: Dk[]): (PhaseTableRow[]) => {
     const dk = dks[pointer.current]
     if (!dk) return tableRows
     if (decodePhase(dk.fdk) === tableRows[pointer.previous]?.numTS) {
-        if ((dk.fdk >= 9) && (tableRows.length !== 1)) {
+        console.log(dk, tableRows[pointer.previous])
+        if ((dk.fdk >= 9) && (tableRows.length > 1)) {
             if (tableRows.length !== 12) tableRows.pop()
             pointer.decrement()
         }
-        console.log(dk, tableRows[pointer.previous])
         return tableRows
     }
     let newRow: PhaseTableRow
@@ -135,12 +135,9 @@ export const convertDKtoTableRows = (dks: Dk[]): (PhaseTableRow[]) => {
         }
     }
     if (newRow.timeMain < 0) newRow.timeMain = 0
-    // if (tableRowsCopy[pointer.current]?.numTS === "КК") {
-    //     tableRowsCopy.splice(pointer.next, 1, newRow)
-    //     pointer.increment()
-    // } else {
+
     tableRowsCopy.splice(pointer.current, 1, newRow)
-    // }
+
     tableRows = Object.assign([], tableRowsCopy)
     return tableRows
 }

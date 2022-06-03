@@ -20,7 +20,8 @@ const initialState: CrossBuildMsg = {
     scon: false,
     sfdk: false,
     state: undefined,
-    techMode: ""
+    techMode: "",
+    model: undefined
 }
 
 export const crossSlice = createSlice({
@@ -52,6 +53,7 @@ export const crossSlice = createSlice({
             state.techMode = action.payload.techMode
             state.modeRdk = action.payload.modeRdk
             state.dk = action.payload.dk
+            state.model = action.payload.model
         },
         // setError: (state, action: PayloadAction<CrossBuildMsg>) => {
         // },
@@ -66,5 +68,6 @@ export const selectCrossInfo = (state: RootState) => state.crossInfo
 export const selectDescription = (state: RootState) => state.crossInfo.cross?.description
 export const selectPhases = (state: RootState) => state.crossInfo.phases
 export const selectIdevice = (state: RootState) => state.crossInfo.cross?.idevice
+export const selectModel = (state: RootState) => state.crossInfo.model
 
 export default crossSlice.reducer

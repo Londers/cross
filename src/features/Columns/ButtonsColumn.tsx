@@ -2,7 +2,7 @@ import React from "react";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {selectIdevice, selectPhases} from "../crossSlice";
 import {Button} from "@mui/material";
-import {PhaseCommandType} from "../../common/tools";
+import {PhaseCommandType} from "../../common/Tools";
 import {wsSendMessage} from "../../common/Middlewares/WebSocketMiddleware";
 
 function ButtonsColumn() {
