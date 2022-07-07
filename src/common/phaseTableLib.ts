@@ -59,7 +59,7 @@ class Pointer {
     }
 }
 
-export let pointer = new Pointer()
+export const pointer = new Pointer()
 
 const calculateTimeTU = (shiftPR: number): number => {
     if (tableRows[pointer.previous].numTU === "ЛР") {
@@ -90,12 +90,16 @@ export const convertDKtoTableRows = (dks: Dk[]): (PhaseTableRow[]) => {
         const numTS = decodePhase(dk.fdk)
         const timeMain = dk.fdk === 9 ? 0 : dk.tdk - (tableRowsCopy[pointer.previous]?.shiftPR ?? 0)
         const timeTS = 0
-        const timeTU = 0
+        const timeTU = (dk.fdk===9) ? shiftPR : 0
 
         if (tableRowsCopy[pointer.previous]) {
             tableRowsCopy[pointer.previous].timeMain = dk.ttcdk
             tableRowsCopy[pointer.previous].timeTS = dk.ttcdk + tableRowsCopy[pointer.previous].timePR
             tableRowsCopy[pointer.previous].timeTU = calculateTimeTU(shiftPR)
+        }
+
+        if ((dk.fdk > 9) && (tableRowsCopy[pointer.previous]?.numTS === "Пром. такт")) {
+            pointer.decrement()
         }
 
         newRow = {
@@ -121,6 +125,12 @@ export const convertDKtoTableRows = (dks: Dk[]): (PhaseTableRow[]) => {
             tableRowsCopy[pointer.previous].timeTU = (tableRowsCopy[pointer.previous].timeTS + tableRowsCopy[pointer.previous].shiftPR) - shiftPR
         }
 
+        if ((tableRowsCopy[pointer.current]?.numTS === "ЖМ") && (dk.fdk === 9)) {
+            return tableRows
+        }
+        if ((tableRowsCopy[pointer.current]?.numTS === "ОС") && (dk.fdk === 9)) {
+            return tableRows
+        }
         if (tableRowsCopy[pointer.current]?.numTS === "КК") pointer.increment()
 
         newRow = {
@@ -136,6 +146,7 @@ export const convertDKtoTableRows = (dks: Dk[]): (PhaseTableRow[]) => {
     }
     if (newRow.timeMain < 0) newRow.timeMain = 0
 
+    console.log(newRow)
     tableRowsCopy.splice(pointer.current, 1, newRow)
 
     tableRows = Object.assign([], tableRowsCopy)

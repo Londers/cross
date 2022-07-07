@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {createTheme, ThemeProvider} from "@mui/material";
 import {DataGrid, GridColDef, ruRU} from "@mui/x-data-grid";
 import {convertDKtoTableRows, pointer} from "../../common/phaseTableLib";
 import {PhaseTableRow} from "../../common";
 import {useAppSelector} from "../../app/hooks";
-import {selectPhases} from "../crossSlice";
 import {selectDKs} from "../phaseTableSlice";
 
 const theme = createTheme(
@@ -17,22 +16,47 @@ const theme = createTheme(
 );
 
 const columns: GridColDef[] = [
-    {field: "numTU", headerName: "№ фазы ТУ", flex: 2, sortable: false },
-    {field: "shiftPR", headerName: "Сдвиг ПР", flex: 2, sortable: false },
-    {field: "timePR", headerName: "Т пр.", flex: 2, sortable: false },
-    {field: "numTS", headerName: "№ фазы ТС", flex: 2, sortable: false },
-    {field: "timeMain", headerName: "Т осн.", flex: 2, sortable: false },
-    {field: "timeTS", headerName: "Т фазы ТС", flex: 2, sortable: false },
-    {field: "timeTU", headerName: "Т фазы ТУ", flex: 2, sortable: false },
+    {field: "numTU", headerName: "№ фазы ТУ", flex: 2, sortable: false},
+    {field: "shiftPR", headerName: "Сдвиг ПР", flex: 2, sortable: false},
+    {field: "timePR", headerName: "Т пр.", flex: 2, sortable: false},
+    {field: "numTS", headerName: "№ фазы ТС", flex: 2, sortable: false},
+    {field: "timeMain", headerName: "Т осн.", flex: 2, sortable: false},
+    {field: "timeTS", headerName: "Т фазы ТС", flex: 2, sortable: false},
+    {field: "timeTU", headerName: "Т фазы ТУ", flex: 2, sortable: false},
 ]
+
+let fakeTicker: NodeJS.Timeout
 
 function PhaseTableColumn() {
     const DKs = useAppSelector(selectDKs)
 
-    const [rows, setRows] = useState<PhaseTableRow[]>(convertDKtoTableRows(DKs))
+    const [rows, setRows] = useState<PhaseTableRow[]>(useCallback(() => convertDKtoTableRows(DKs), [DKs]))
 
     useEffect(() => {
-        setRows(convertDKtoTableRows(DKs))
+        const newRows = convertDKtoTableRows(DKs)
+        setRows([...newRows])
+        clearInterval(fakeTicker)
+
+        fakeTicker = setInterval(() => {
+            const currentRow = newRows[pointer.current] ?? undefined
+            if (!currentRow) return
+            if (currentRow.numTS === "Пром. такт") {
+                currentRow.timePR++
+                currentRow.timeTS++
+                currentRow.timeTU++
+            } else {
+                currentRow.timeMain++
+                currentRow.timeTS++
+                currentRow.timeTU++
+            }
+
+            if (newRows.length < 12) {
+                setRows([...newRows])
+            } else {
+                // newRows[pointer.current] = currentRow
+                setRows([...newRows.slice(0, pointer.current), currentRow, ...newRows.slice(pointer.current + 1, newRows.length)])
+            }
+        }, 1000)
     }, [DKs])
 
     return (
