@@ -33,7 +33,7 @@ function PhaseTableColumn() {
     const [rows, setRows] = useState<PhaseTableRow[]>(useCallback(() => convertDKtoTableRows(DKs), [DKs]))
 
     useEffect(() => {
-        const newRows = convertDKtoTableRows(DKs)
+        const newRows = [...convertDKtoTableRows(DKs)]
         setRows([...newRows])
         clearInterval(fakeTicker)
 
@@ -53,7 +53,6 @@ function PhaseTableColumn() {
             if (newRows.length < 12) {
                 setRows([...newRows])
             } else {
-                // newRows[pointer.current] = currentRow
                 setRows([...newRows.slice(0, pointer.current), currentRow, ...newRows.slice(pointer.current + 1, newRows.length)])
             }
         }, 1000)

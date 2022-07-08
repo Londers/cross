@@ -72,9 +72,10 @@ const calculateTimeTU = (shiftPR: number): number => {
 export const convertDKtoTableRows = (dks: Dk[]): (PhaseTableRow[]) => {
     const dk = dks[pointer.current]
     if (!dk) return tableRows
-    if (decodePhase(dk.fdk) === tableRows[pointer.previous]?.numTS) {
-        console.log(dk, tableRows[pointer.previous])
-        if ((dk.fdk >= 9) && (tableRows.length > 1)) {
+    if ((decodePhase(dk.fdk) === tableRows[pointer.previous]?.numTS) || (dk.fdk === tableRows[pointer.current]?.numTS)) {
+        console.log("dup")
+        // console.log(dk, tableRows[pointer.previous])
+        if ((dk.fdk > 9) && (tableRows.length > 1)) {
             if (tableRows.length !== 12) tableRows.pop()
             pointer.decrement()
         }
@@ -86,11 +87,11 @@ export const convertDKtoTableRows = (dks: Dk[]): (PhaseTableRow[]) => {
     if (dk.fdk >= 9) {
         const numTU = decodePhase(dk.ftudk)
         const shiftPR = dk.tdk
-        const timePR = dk.fdk === 9 ? 0 : dk.ttcdk
+        const timePR = (dk.fdk === 9) ? 0 : dk.ttcdk
         const numTS = decodePhase(dk.fdk)
-        const timeMain = dk.fdk === 9 ? 0 : dk.tdk - (tableRowsCopy[pointer.previous]?.shiftPR ?? 0)
-        const timeTS = 0
-        const timeTU = (dk.fdk===9) ? shiftPR : 0
+        const timeMain = (dk.fdk === 9) ? 0 : dk.tdk - (tableRowsCopy[pointer.previous]?.shiftPR ?? 0)
+        const timeTS = (dk.fdk === 9) ? 0 : timePR + timeMain
+        const timeTU = (dk.fdk === 9) ? shiftPR : shiftPR + timeTS
 
         if (tableRowsCopy[pointer.previous]) {
             tableRowsCopy[pointer.previous].timeMain = dk.ttcdk
