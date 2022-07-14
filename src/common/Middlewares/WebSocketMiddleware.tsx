@@ -10,7 +10,7 @@ import {
     setCross,
     setEdit,
     setInitialData,
-    setPhase,
+    setPhaseInfo,
     setState
 } from "../../features/crossSlice";
 import {setDispatch} from "../../features/dispatchTableSlice";
@@ -54,7 +54,7 @@ WebSocketListenerMiddleware.startListening({
                     listenerApi.dispatch(setConnection(action.payload.data as CrossConnectionMsg))
                     break;
                 case "phase":
-                    listenerApi.dispatch(setPhase(action.payload.data as PhaseMsg))
+                    listenerApi.dispatch(setPhaseInfo(action.payload.data as PhaseMsg))
                     listenerApi.dispatch(addDK(action.payload.data as PhaseMsg))
                     break;
                 // case "error":

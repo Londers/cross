@@ -31,6 +31,7 @@ export interface CrossBuildMsg {
     state: State | undefined;
     techMode: string;
     model: Model | undefined;
+    svg: string | undefined;
 }
 
 export interface ChangeEditMsg {

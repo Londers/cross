@@ -10,6 +10,10 @@ export const phaseTableSlice = createSlice({
         initialState,
         reducers: {
             addDK: (state, action: PayloadAction<PhaseMsg>) => {
+                if (action.payload.dk.fdk === state[pointer.current]?.fdk) { // <= 9 ???
+                    console.log("ignore duplicate", action.payload.dk)
+                    return
+                }
                 if (action.payload.dk.fdk >= 9) {
                     state.splice(pointer.next, 1, action.payload.dk)
                     if (state.length !== 1) pointer.increment()

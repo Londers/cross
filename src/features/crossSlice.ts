@@ -21,7 +21,8 @@ const initialState: CrossBuildMsg = {
     sfdk: false,
     state: undefined,
     techMode: "",
-    model: undefined
+    model: undefined,
+    svg: undefined,
 }
 
 export const crossSlice = createSlice({
@@ -49,11 +50,17 @@ export const crossSlice = createSlice({
             state.scon = action.payload.scon
             state.eth = action.payload.eth
         },
-        setPhase: (state, action: PayloadAction<PhaseMsg>) => {
+        setPhaseInfo: (state, action: PayloadAction<PhaseMsg>) => {
             state.techMode = action.payload.techMode
             state.modeRdk = action.payload.modeRdk
             state.dk = action.payload.dk
             state.model = action.payload.model
+
+            // //@ts-ignore
+            // if (typeof setPhase !== "undefined") {
+            //     //@ts-ignore
+            //     setPhase(action.payload.dk.fdk)
+            // }
         },
         // setError: (state, action: PayloadAction<CrossBuildMsg>) => {
         // },
@@ -62,12 +69,13 @@ export const crossSlice = createSlice({
     }
 })
 
-export const {setInitialData, setEdit, setCross, setState, setConnection, setPhase} = crossSlice.actions
+export const {setInitialData, setEdit, setCross, setState, setConnection, setPhaseInfo} = crossSlice.actions
 
 export const selectCrossInfo = (state: RootState) => state.crossInfo
 export const selectDescription = (state: RootState) => state.crossInfo.cross?.description
 export const selectPhases = (state: RootState) => state.crossInfo.phases
 export const selectIdevice = (state: RootState) => state.crossInfo.cross?.idevice
 export const selectModel = (state: RootState) => state.crossInfo.model
+export const selectSVG = (state: RootState) => state.crossInfo.svg
 
 export default crossSlice.reducer
