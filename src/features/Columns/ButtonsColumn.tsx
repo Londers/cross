@@ -1,42 +1,83 @@
-import React from "react";
+import React, {useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {selectIdevice, selectPhases} from "../crossSlice";
-import {Button} from "@mui/material";
+import {selectCrossInfo, selectIdevice, selectPhases} from "../crossSlice";
+import {Box, Button} from "@mui/material";
 import {PhaseCommandType} from "../../common/Tools";
 import {wsSendMessage} from "../../common/Middlewares/WebSocketMiddleware";
+import "./ButtonsColumn.sass"
+
+let phaseSender: NodeJS.Timer | undefined
 
 function ButtonsColumn() {
+    const cross = useAppSelector(selectCrossInfo).cross
     const phases = useAppSelector(selectPhases)
     const idevice = useAppSelector(selectIdevice)
     const dispatch = useAppDispatch()
 
-    const dispatchToDevice = (param: number) => {
+    const [currentButton, setCurrentButton] = useState<(EventTarget & HTMLAnchorElement) | (EventTarget & HTMLButtonElement) | undefined>()
+
+    const dispatchSpecialPhaseToDevice = (param: number) => {
+        if (phaseSender) {
+            currentButton?.classList.remove("phaseRepeat")
+            clearInterval(phaseSender)
+            phaseSender = undefined
+        }
         dispatch(wsSendMessage({type: "dispatch", cmd: PhaseCommandType, id: idevice, param}))
     }
 
+    const dispatchPhaseToDevice = (param: number, e: React.MouseEvent<HTMLAnchorElement> | React.MouseEvent<HTMLButtonElement>) => {
+        if (!phaseSender) {
+            e.currentTarget.classList.add("phaseRepeat")
+            setCurrentButton(e.currentTarget)
+            dispatch(wsSendMessage({type: "dispatch", cmd: PhaseCommandType, id: idevice, param}))
+            phaseSender = setInterval(
+                () => dispatch(wsSendMessage({type: "dispatch", cmd: PhaseCommandType, id: idevice, param})),
+                60000
+            )
+        } else {
+            e.currentTarget.classList.remove("phaseRepeat")
+            setCurrentButton(undefined)
+            clearInterval(phaseSender)
+            phaseSender = undefined
+        }
+    }
+
+    const openLogs = () => {
+        if (cross) {
+            localStorage.setItem('ID', cross.ID.toString())
+            localStorage.setItem('area', cross.area.num)
+            localStorage.setItem('region', cross.region.num)
+            localStorage.setItem('description', cross.description)
+            window.open(window.location.origin + '/user/' + localStorage.getItem('login') + '/deviceLog')
+        }
+    }
+
     return (
-        <>
+        <Box>
             {phases.map((phase, index) =>
-                <Button variant="outlined" size="large" onClick={() => dispatchToDevice(phase)} key={index}>
+                <Button className="phase" variant="outlined" size="large"
+                        onClick={(e) => dispatchPhaseToDevice(phase, e)}
+                        key={index}>
                     {phase}
                 </Button>
             )}
-            <Button variant="outlined" size="large" onClick={() => dispatchToDevice(10)}>
+            <Button className="phase" variant="outlined" size="large" onClick={() => dispatchSpecialPhaseToDevice(10)}>
                 ЖМ
             </Button>
-            <Button variant="outlined" size="large" onClick={() => dispatchToDevice(11)}>
+            <Button className="phase" variant="outlined" size="large" onClick={() => dispatchSpecialPhaseToDevice(11)}>
                 ОС
             </Button>
-            <Button variant="outlined" size="large" onClick={() => dispatchToDevice(0)}>
+            <Button className="phase" variant="outlined" size="large" onClick={() => dispatchSpecialPhaseToDevice(0)}>
                 ЛР
             </Button>
-            <Button variant="outlined" size="large" onClick={() => dispatchToDevice(9)}>
+            <Button className="phase" variant="outlined" size="large" onClick={() => dispatchSpecialPhaseToDevice(9)}>
                 КУ
             </Button>
-            <Button variant="outlined" size="small">
+            <Button className="phase" variant="outlined" size="small" onClick={openLogs}
+                    style={{width: "50%", fontSize: "10px"}}>
                 Открыть журнал
             </Button>
-        </>
+        </Box>
     )
 }
 

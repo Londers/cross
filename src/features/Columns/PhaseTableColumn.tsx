@@ -59,7 +59,7 @@ function PhaseTableColumn() {
     }, [DKs])
 
     return (
-        <div style={{height: "70vh"}}>
+        <div style={{height: "69.58vh", width: "50vw"}}>
             <ThemeProvider theme={theme}>
                 <DataGrid
                     selectionModel={pointer.current}
