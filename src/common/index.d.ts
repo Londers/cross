@@ -32,6 +32,9 @@ export interface CrossBuildMsg {
     techMode: string;
     model: Model | undefined;
     svg: string | undefined;
+    cameras: boolean;
+    deviceElc: number;
+    deviceError: DeviceError | undefined;
 }
 
 export interface ChangeEditMsg {
@@ -359,4 +362,13 @@ export interface Model {
     STP: boolean;
     DKA: boolean;
     DTA: boolean;
+}
+
+export interface DeviceError {
+    V220DK1: boolean;
+    V220DK2: boolean;
+    RTC: boolean;
+    TVP1: boolean;
+    TVP2: boolean;
+    FRAM: boolean;
 }

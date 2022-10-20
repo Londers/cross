@@ -23,6 +23,9 @@ const initialState: CrossBuildMsg = {
     techMode: "",
     model: undefined,
     svg: undefined,
+    cameras: false,
+    deviceElc: 0,
+    deviceError: undefined
 }
 
 export const crossSlice = createSlice({
@@ -77,5 +80,8 @@ export const selectPhases = (state: RootState) => state.crossInfo.phases
 export const selectIdevice = (state: RootState) => state.crossInfo.cross?.idevice
 export const selectModel = (state: RootState) => state.crossInfo.model
 export const selectSVG = (state: RootState) => state.crossInfo.svg
+export const selectCameras = (state: RootState) => state.crossInfo.cameras
+export const selectDeviceElc = (state: RootState) => state.crossInfo.deviceElc
+export const selectDeviceError = (state: RootState) => state.crossInfo.deviceError
 
 export default crossSlice.reducer

@@ -1,10 +1,10 @@
 import React from "react";
 import {Grid, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {selectCrossInfo, selectModel} from "../crossSlice";
+import {selectCrossInfo, selectDeviceElc, selectDeviceError, selectModel} from "../crossSlice";
 import {wsSendMessage} from "../../common/Middlewares/WebSocketMiddleware";
 import {decodePhase} from "../../common/phaseTableLib";
-import {switchArrayTypeFromDevice} from "../../common/Tools";
+import {checkError, checkMalfunction, switchArrayTypeFromDevice} from "../../common/Tools";
 
 function ControlColumn() {
     const cross = useAppSelector(selectCrossInfo)
@@ -14,6 +14,8 @@ function ControlColumn() {
     const dispatchControl = (cmd: number, param: number) => {
         dispatch(wsSendMessage({type: "dispatch", id: cross.cross?.idevice, cmd, param}))
     }
+    const deviceElc = useAppSelector(selectDeviceElc)
+    const deviceError = useAppSelector(selectDeviceError)
 
     const handlePkChange = (event: SelectChangeEvent<number>) => dispatchControl(5, Number(event.target.value))
     const handleSkChange = (event: SelectChangeEvent<number>) => dispatchControl(6, Number(event.target.value))
@@ -104,6 +106,9 @@ function ControlColumn() {
             <Grid item sx={{marginTop: "2vh"}}>
                 {cross.scon ? (cross.eth ? "LAN" : "GPRS") : ""}
             </Grid>
+            {(deviceElc !== 0) && <Grid item sx={{marginTop: "2vh"}}>
+                {checkError(deviceError, deviceElc, checkMalfunction(deviceError) !== "")}
+            </Grid>}
         </Grid>
     )
 }

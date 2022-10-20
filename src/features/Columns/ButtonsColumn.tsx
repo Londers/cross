@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {selectCrossInfo, selectIdevice, selectPhases} from "../crossSlice";
+import {selectCameras, selectCrossInfo, selectIdevice, selectPhases} from "../crossSlice";
 import {Box, Button} from "@mui/material";
 import {PhaseCommandType} from "../../common/Tools";
 import {wsSendMessage} from "../../common/Middlewares/WebSocketMiddleware";
@@ -15,6 +15,7 @@ function ButtonsColumn() {
     const dispatch = useAppDispatch()
 
     const [currentButton, setCurrentButton] = useState<(EventTarget & HTMLAnchorElement) | (EventTarget & HTMLButtonElement) | undefined>()
+    const cameras = useAppSelector(selectCameras)
 
     const dispatchSpecialPhaseToDevice = (param: number) => {
         if (phaseSender) {
@@ -77,6 +78,10 @@ function ButtonsColumn() {
                     style={{width: "50%", fontSize: "10px"}}>
                 Открыть журнал
             </Button>
+            {cameras && <Button className="phase" variant="outlined" size="small" onClick={() => window.open(window.location.href.replace("cross?", "cameras?"))}
+                     style={{width: "50%", fontSize: "10px"}}>
+                Открыть ДТ
+            </Button>}
         </Box>
     )
 }
