@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useAppSelector} from "../app/hooks";
 import {selectDescription} from "./crossSlice";
 import ButtonsColumn from "./Columns/ButtonsColumn";
@@ -9,6 +9,10 @@ import PhaseTableColumn from "./Columns/PhaseTableColumn";
 
 function MainScreen() {
     const description = useAppSelector(selectDescription)
+
+    useEffect(() => {
+        document.title = description ?? "Перекрёсток"
+    }, [description])
 
     return (
         <>

@@ -1,5 +1,3 @@
-import {darkScrollbar} from "@mui/material";
-
 export interface IncomingWebSocketMessage {
     type: string
     data: IncomingDataType
