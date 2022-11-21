@@ -27,7 +27,11 @@ function ButtonsColumn() {
     }
 
     const dispatchPhaseToDevice = (param: number, e: React.MouseEvent<HTMLAnchorElement> | React.MouseEvent<HTMLButtonElement>) => {
-        if (!phaseSender) {
+        currentButton?.classList.remove("phaseRepeat")
+        setCurrentButton(undefined)
+        clearInterval(phaseSender)
+        phaseSender = undefined
+        if (currentButton !== e.currentTarget) {
             e.currentTarget.classList.add("phaseRepeat")
             setCurrentButton(e.currentTarget)
             dispatch(wsSendMessage({type: "dispatch", cmd: PhaseCommandType, id: idevice, param}))
@@ -35,11 +39,6 @@ function ButtonsColumn() {
                 () => dispatch(wsSendMessage({type: "dispatch", cmd: PhaseCommandType, id: idevice, param})),
                 60000
             )
-        } else {
-            e.currentTarget.classList.remove("phaseRepeat")
-            setCurrentButton(undefined)
-            clearInterval(phaseSender)
-            phaseSender = undefined
         }
     }
 
