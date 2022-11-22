@@ -13,8 +13,16 @@ function ImagePlaceholder() {
     useEffect(() => {
         //@ts-ignore
         if (typeof setPhase !== "undefined") {
-            //@ts-ignore
-            if (phase) setPhase(phase)
+            if (phase) {
+                try {
+                    //@ts-ignore
+                    setPhase(phase)
+                } catch (err) {
+                    console.log(err)
+                    alert("Ошибка: отсутсвует картинка фазы: " + phase)
+                }
+
+            }
         }
     }, [phase])
 
