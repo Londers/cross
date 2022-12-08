@@ -43,12 +43,14 @@ function PhaseTableColumn() {
             if (currentRow.numTS === "Пром. такт") {
                 currentRow.timePR++
                 currentRow.timeTS++
-                currentRow.timeTU++
+                if (currentRow.numTU !== "ЛР") currentRow.timeTU++
             } else {
                 currentRow.timeMain++
                 currentRow.timeTS++
-                currentRow.timeTU++
+                if (currentRow.numTU !== "ЛР") currentRow.timeTU++
             }
+
+            if (currentRow.numTU === "ЛР") currentRow.timeTU = 0
 
             if (newRows.length < 12) {
                 setRows([...newRows])

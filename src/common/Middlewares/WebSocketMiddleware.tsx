@@ -60,9 +60,10 @@ WebSocketListenerMiddleware.startListening({
                 // case "error":
                 //     listenerApi.dispatch(setError(action.payload.data as ChangeEditMsg))
                 //     break;
-                // case "close":
-                //     listenerApi.dispatch(setClose(action.payload.data as ChangeEditMsg))
-                //     break;
+                case "close":
+                    ws.close(1000)
+                    window.close()
+                    break;
                 default:
                     console.log("type not found:", action.payload)
                     break;

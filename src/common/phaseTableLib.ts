@@ -147,6 +147,7 @@ export const convertDKtoTableRows = (dks: Dk[]): (PhaseTableRow[]) => {
         }
     }
     if (newRow.timeMain < 0) newRow.timeMain = 0
+    if (newRow.numTU === "ЛР") newRow.timeTU = 0
 
     console.log(newRow)
     tableRowsCopy.splice(pointer.current, 1, newRow)
