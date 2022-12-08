@@ -61,7 +61,7 @@ function PhaseTableColumn() {
     }, [DKs])
 
     return (
-        <div style={{height: "69.58vh", width: "50vw"}}>
+        <div style={{width: "50vw"}}>
             <ThemeProvider theme={theme}>
                 <DataGrid
                     selectionModel={pointer.current}
@@ -72,6 +72,7 @@ function PhaseTableColumn() {
                     disableSelectionOnClick
                     rows={rows}
                     columns={columns}
+                    autoHeight={true}
                     // selectionModel={selection}
                     // onSelectionModelChange={handleCrossSelect}
                     hideFooter

@@ -15,7 +15,7 @@ function ImageColumn() {
     return (
         <>
             <ImagePlaceholder/>
-            <p>{crossInfo.modeRdk}</p>
+            <p>{crossInfo.dk?.edk === 1 ? "ПЕРЕХОД" : crossInfo.modeRdk}</p>
             <p>Статус: {crossInfo.cross?.tlsost.description}</p>
             <p>Технология: {crossInfo.techMode}</p>
             <Button variant="outlined" onClick={handleArmOpen}>Открыть привязку</Button>
