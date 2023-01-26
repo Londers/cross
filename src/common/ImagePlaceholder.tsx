@@ -13,6 +13,12 @@ function ImagePlaceholder() {
     useEffect(() => {
         //@ts-ignore
         if (typeof setPhase !== "undefined") {
+            try {
+                // @ts-ignore боль, костыль из-за onload в картике
+                modever = 0; currentPhase = 0; setVisualMode(modever); dropLight(); dropDirect(); dropLocale();
+            } catch (e) {
+                console.log(e)
+            }
             if (phase) {
                 try {
                     //@ts-ignore
@@ -21,7 +27,6 @@ function ImagePlaceholder() {
                     console.log(err)
                     alert("Ошибка: отсутсвует картинка фазы: " + phase)
                 }
-
             }
         }
     }, [phase])

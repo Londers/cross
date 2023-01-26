@@ -46,6 +46,15 @@ class Pointer {
         if (this._next <= -1) this._next = maxTableSize - 1
     }
 
+    setCurrent(current: number) {
+        if (current >= maxTableSize) {
+            console.log("shit", current, maxTableSize)
+            throw new Error("shit")
+        }
+        this.increment()
+        while (this.current !== current) this.increment()
+    }
+
     get previous(): number {
         return this._previous;
     }

@@ -15,6 +15,8 @@ import {
 } from "../../features/crossSlice";
 import {setDispatch} from "../../features/dispatchTableSlice";
 import {addDK} from "../../features/phaseTableSlice";
+import {pointer} from "../phaseTableLib";
+import {RootState} from "../../app/store";
 
 export const wsConnect = createAction<string>("websocket/connect")
 export const wsGetMessage = createAction<IncomingWebSocketMessage>('websocket/message')
@@ -25,11 +27,19 @@ let ws: WebSocket
 WebSocketListenerMiddleware.startListening({
     matcher: isAnyOf(wsConnect, wsGetMessage, wsSendMessage),
     effect: async (action, listenerApi) => {
+
         if (wsConnect.match(action)) {
             ws = new WebSocket(action.payload)
             ws.onopen = () => console.log("opened")
             ws.onerror = (e) => console.log("error", e)
-            ws.onclose = (e) => console.log("closed", e)
+            ws.onclose = (e) => {
+                console.log("closed", e)
+                const state = listenerApi.getState() as RootState
+                localStorage.setItem("crossPointer", JSON.stringify(pointer))
+                localStorage.setItem("crossTable", JSON.stringify(state.phaseTable))
+
+                setTimeout(() => window.location.reload(), 2000)
+            }
             ws.onmessage = (e) => listenerApi.dispatch(wsGetMessage(JSON.parse(e.data)))
         } else if (wsSendMessage.match(action)) {
             ws.send(JSON.stringify(action.payload as OutcomingWebSocketMessage))
@@ -57,9 +67,12 @@ WebSocketListenerMiddleware.startListening({
                     listenerApi.dispatch(setPhaseInfo(action.payload.data as PhaseMsg))
                     listenerApi.dispatch(addDK(action.payload.data as PhaseMsg))
                     break;
-                // case "error":
-                //     listenerApi.dispatch(setError(action.payload.data as ChangeEditMsg))
-                //     break;
+                case "error":
+                    if ("message" in action.payload.data) {
+                        alert("Произошла ошибка. Обратитесь к администратору")
+                        console.log("error ", action.payload.data)
+                    }
+                    break;
                 case "close":
                     ws.close(1000)
                     window.close()
